@@ -10,20 +10,24 @@ var utilities = {
     search: function(searchTerm,numResults) {
         var queryUrl = this.apiEndpoint+'search?'+'api_key='+this.apiKey+'&q='+searchTerm+'&limit='+numResults
         $.ajax({
-            queryUrl: queryUrl,
+            url: queryUrl,
             method: 'GET'
-        }).then(this.renderResults(response)) 
+        }).then(function(response) {
+            utilities.renderResults(response)
+        }) 
     },
     renderResults: function(response) {
-        $(".searchResults").append(response.data[0])
+        console.log(response);
+        //store response.data in an array then iterate through the array
+        $(".searchResults").append(response.data[0].type)
     }
 
 }
 
 //Events
 $("#search").on("click", function() {
-    var input = $('#user-input').val()
-    var query
+    var input = $("#user-input").val();
+    utilities.search(input,1);
 })
 
 
