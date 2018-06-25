@@ -19,13 +19,21 @@ var utilities = {
     renderResults: function(response,divName) {
         var responseArray = response.data
         responseArray.forEach(function(element) {
+            var imageContainer = $("<div>");
             var image = $("<img>");
+            imageContainer.append(image);
+            
+            //Adding styling classes to imageContainer
+            imageContainer.addClass("col-md-4"); //Adding bootstrap responsive classes
+
+            //Adding atrributes and styling classes to image
+            image.addClass("img-fluid"); //Adds Bootstrap specific class for styling
             image.addClass("gif");
             image.attr("data-still", element.images.fixed_height_still.url)
             image.attr("src", element.images.fixed_height_still.url)
             image.attr("data-animate", element.images.fixed_height.url)
             image.attr("data-state", "still")
-            $(divName).append(image)
+            $(divName).append(imageContainer)
         })
     },
     renderButtons: function(array, divName) {
