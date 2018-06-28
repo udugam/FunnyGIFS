@@ -113,5 +113,34 @@ var utilities = {
 }
 
 
+//Events
+$(document).ready(function() {
+    //Load buttons
+    utilities.renderButtons(gifs.topics,".buttons")
+
+    //Events
+    $("#addTopic").on("click", function() {
+    var input = $("#user-input").val();
+    $("#user-input").val("");
+    utilities.newTopic(input,gifs.topics);
+    utilities.renderButtons(gifs.topics, ".buttons");
+    })
+    
+    $("body").on("click", ".savedGifs", function() {
+    var input = $(this).text();
+    utilities.search(input,10);
+    })
+
+    //This event freezes of unfreezes the gif on click
+    $("body").on("click", ".gif", function() {
+        ($(this).attr("data-state")==="still") ? utilities.unfreeze($(this)) : utilities.freeze($(this))
+    })
+
+    //This event calls on the add to favourtie method whent the button is clicked
+    $("body").on("click", ".addFavourite", function() {
+        utilities.addToFavourites($(this).attr("data-response"));
+    })
+})
+
 
 

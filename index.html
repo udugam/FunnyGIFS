@@ -40,34 +40,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     <script src="./assets/javascript/app.js" type="text/javascript"></script>
-    <script>
-    $(document).ready(function() {
-        //Load buttons
-        utilities.renderButtons(gifs.topics,".buttons")
-
-        //Events
-        $("#addTopic").on("click", function() {
-        var input = $("#user-input").val();
-        $("#user-input").val("");
-        utilities.newTopic(input,gifs.topics);
-        utilities.renderButtons(gifs.topics, ".buttons");
-        })
-        
-        $("body").on("click", ".savedGifs", function() {
-        var input = $(this).text();
-        utilities.search(input,10);
-        })
-
-        //This event freezes of unfreezes the gif on click
-        $("body").on("click", ".gif", function() {
-            ($(this).attr("data-state")==="still") ? utilities.unfreeze($(this)) : utilities.freeze($(this))
-        })
-
-        //This event calls on the add to favourtie method whent the button is clicked
-        $("body").on("click", ".addFavourite", function() {
-            utilities.addToFavourites($(this).attr("data-response"));
-        })
-    })
-    </script>
 </body>
 </html>
