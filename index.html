@@ -64,10 +64,9 @@
         })
 
         //This event calls on the add to favourtie method whent the button is clicked
-        $("body").on("click", "#addFavourite", function() {
-            utilities.addToFavourites($(this).val());
+        $("body").on("click", ".addFavourite", function() {
+            utilities.addToFavourites($(this).attr("data-response"));
         })
-
     })
     </script>
 </body>

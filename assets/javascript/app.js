@@ -1,7 +1,7 @@
 
 var gifs = {
     topics: ["weekend", "office", "coding"],
-    favs: JSON.parse(localStorage.getItem("favourites")),
+    favs: localStorage.getItem("favourites") ? JSON.parse(localStorage.getItem("favourites")) : []
 }
 
 var utilities = {
@@ -30,14 +30,20 @@ var utilities = {
             var imageContainer = $("<div>");
             var image = $("<img>");
             var actions = $("<div>");
+            var favButton = $("<button>");
             imageContainer.append(image,actions);
             
             //Adding styling classes to imageContainer
             imageContainer.addClass("col-md-4"); //Adding bootstrap responsive classes
             imageContainer.addClass("image-container");
 
-            //Adding buttons to actions div and storing the gif's id in the button's value
-            actions.append("<button id='addFavourite' value="+element.id+">Add to Favourites</button>")
+            //Constructing the favourite button
+            favButton.text("Add To Favourites");
+            favButton.addClass("addFavourite")
+            favButton.attr("data-response", JSON.stringify(element));
+
+            //Adding the favourite button to the actions div 
+            actions.append(favButton);
 
             //Adding atrributes and styling classes to image
             image.addClass("img-fluid"); //Adds Bootstrap specific class for styling
@@ -61,7 +67,31 @@ var utilities = {
     renderFavs: function(array, divName) {
         $(divName).empty();
         array.forEach(function(element) {
-            utilities.searchID(element,divName)
+            var imageContainer = $("<div>");
+            var image = $("<img>");
+            var actions = $("<div>");
+            var delButton = $("<button>");
+            imageContainer.append(image,actions);
+            
+            //Adding styling classes to imageContainer
+            imageContainer.addClass("col-md-4"); //Adding bootstrap responsive classes
+            imageContainer.addClass("image-container");
+
+            //Constructing the delete button
+            delButton.text("Delete From Favourites");
+            delButton.addClass("delFavourite")
+
+            //Adding the favourite button to the actions div 
+            actions.append(delButton);
+
+            //Adding atrributes and styling classes to image
+            image.addClass("img-fluid"); //Adds Bootstrap specific class for styling
+            image.addClass("gif");
+            image.attr("data-still", element.images.fixed_height_still.url);
+            image.attr("src", element.images.fixed_height_still.url);
+            image.attr("data-animate", element.images.fixed_height.url);
+            image.attr("data-state", "still");
+            $(divName).append(imageContainer);
         })
     },
     newTopic: function(topicName,topicsArray) {
@@ -75,11 +105,10 @@ var utilities = {
         $(image).attr("src", $(image).attr("data-still"));
         $(image).attr("data-state", "still");
     },
-    addToFavourites: function(imageID) {
-        if(!gifs.favs.includes(imageID)) { //Add condition for mutiple click behavior
-            gifs.favs.push(imageID);
-            localStorage.setItem("favourites",JSON.stringify(gifs.favs));
-        }
+    addToFavourites: function(imageDiv) {
+       //Add condition for multiple click behavior
+        gifs.favs.push(JSON.parse(imageDiv));
+        localStorage.setItem("favourites",JSON.stringify(gifs.favs));
     }
 }
 
