@@ -1,6 +1,6 @@
 
 var gifs = {
-    topics: ["weekend", "office", "coding"],
+    searches: localStorage.getItem("savedSearches") ? JSON.parse(localStorage.getItem("savedSearches")) : ["fails", "bloopers", "slips"],
     favs: localStorage.getItem("favourites") ? JSON.parse(localStorage.getItem("favourites")) : []
 }
 
@@ -68,7 +68,7 @@ var utilities = {
     },
     renderFavs: function(array, divName) {
         $(divName).empty();
-        array.forEach(function(element) {
+        array.forEach(function(element, index) {
             var imageContainer = $("<div>");
             var image = $("<img>");
             var actions = $("<div>");
@@ -81,7 +81,8 @@ var utilities = {
 
             //Constructing the delete button
             delButton.text("Delete From Favourites");
-            delButton.addClass("delFavourite")
+            delButton.addClass("delFavourite");
+            delButton.attr("data-index", index);
 
             //Adding the favourite button to the actions div 
             actions.append(delButton);
@@ -96,8 +97,9 @@ var utilities = {
             $(divName).append(imageContainer);
         })
     },
-    newTopic: function(topicName,topicsArray) {
-        topicsArray.push(topicName);
+    newTopic: function(topicName,searchesArray) {
+        searchesArray.includes(topicName) ? null : searchesArray.push(topicName);
+        localStorage.setItem("savedSearches", JSON.stringify(gifs.searches));
     },
     unfreeze: function(image) {
         $(image).attr("src", $(image).attr("data-animate"));
@@ -111,6 +113,12 @@ var utilities = {
        //Add condition for multiple click behavior
         gifs.favs.push(JSON.parse(imageDiv));
         localStorage.setItem("favourites",JSON.stringify(gifs.favs));
+    },
+    removeFromFavs: function(index,favsArray) {
+        favsArray.splice(parseInt(index),1);
+        utilities.renderFavs(gifs.favs,".favs");
+        localStorage.setItem("favourites", JSON.stringify(gifs.favs));
+
     }
 }
 
@@ -118,14 +126,15 @@ var utilities = {
 //Events
 $(document).ready(function() {
     //Load buttons
-    utilities.renderButtons(gifs.topics,".buttons")
+    utilities.renderButtons(gifs.searches,".buttons")
 
-    //Events
-    $("#addTopic").on("click", function() {
+    //Saves searchTerm to searches array
+    $("#saveSearch").on("click", function() {
         var input = $("#user-input").val().trim();
-        (input==="") ? input=sessionStorage.getItem("searchTerm") : null
-        utilities.newTopic(input,gifs.topics);
-        utilities.renderButtons(gifs.topics, ".buttons");
+        if (input!="") {
+            utilities.newTopic(sessionStorage.getItem("searchTerm"),gifs.searches);
+            utilities.renderButtons(gifs.searches, ".buttons");
+        }
     })
     
     $("body").on("click", ".savedGifs", function() {
@@ -146,8 +155,12 @@ $(document).ready(function() {
     //This event calls on the search method when the search button is clicked
     $("body").on("click", "#search", function() {
         var input = $("#user-input").val();
-        $("#user-input").val("");
         utilities.search(input,21);
+    })
+
+    //This event deletes a gif from the favourties array whent he delete button is clicked
+    $("body").on("click", '.delFavourite', function () {
+        utilities.removeFromFavs($(this).attr("data-index"),gifs.favs)
     })
 })
 
