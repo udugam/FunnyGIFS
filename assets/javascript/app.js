@@ -14,6 +14,7 @@ var utilities = {
             method: 'GET'
         }).then(function(response) {
             utilities.renderResults(response,".searchResults")
+            sessionStorage.setItem("searchTerm", searchTerm);
         }) 
     },
     searchID: function(id,divName) {
@@ -26,6 +27,7 @@ var utilities = {
         }) 
     },
     renderResults: function(response,divName) {
+        $(divName).empty();
         response.data.forEach(function(element) {
             var imageContainer = $("<div>");
             var image = $("<img>");
@@ -120,15 +122,15 @@ $(document).ready(function() {
 
     //Events
     $("#addTopic").on("click", function() {
-    var input = $("#user-input").val();
-    $("#user-input").val("");
-    utilities.newTopic(input,gifs.topics);
-    utilities.renderButtons(gifs.topics, ".buttons");
+        var input = $("#user-input").val().trim();
+        (input==="") ? input=sessionStorage.getItem("searchTerm") : null
+        utilities.newTopic(input,gifs.topics);
+        utilities.renderButtons(gifs.topics, ".buttons");
     })
     
     $("body").on("click", ".savedGifs", function() {
-    var input = $(this).text();
-    utilities.search(input,10);
+        var input = $(this).text();
+        utilities.search(input,21);
     })
 
     //This event freezes of unfreezes the gif on click
@@ -139,6 +141,13 @@ $(document).ready(function() {
     //This event calls on the add to favourtie method whent the button is clicked
     $("body").on("click", ".addFavourite", function() {
         utilities.addToFavourites($(this).attr("data-response"));
+    })
+
+    //This event calls on the search method when the search button is clicked
+    $("body").on("click", "#search", function() {
+        var input = $("#user-input").val();
+        $("#user-input").val("");
+        utilities.search(input,21);
     })
 })
 
