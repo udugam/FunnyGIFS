@@ -1,6 +1,6 @@
 
 var gifs = {
-    searches: localStorage.getItem("savedSearches") ? JSON.parse(localStorage.getItem("savedSearches")) : ["fails", "bloopers", "slips"],
+    searches: localStorage.getItem("savedSearches") ? JSON.parse(localStorage.getItem("savedSearches")) : ["fails", "bloopers", "laughing"],
     favs: localStorage.getItem("favourites") ? JSON.parse(localStorage.getItem("favourites")) : []
 }
 
@@ -8,7 +8,7 @@ var utilities = {
     apiEndpoint: 'https://api.giphy.com/v1/gifs/',
     apiKey: 'DiPlXGeORzdsWmWTvkAKFRVvjcAm5idS',
     search: function(searchTerm,numResults) {
-        var queryUrl = this.apiEndpoint+'search?'+'api_key='+this.apiKey+'&q='+searchTerm+'&limit='+numResults
+        var queryUrl = this.apiEndpoint+'search?'+'api_key='+this.apiKey+'&q='+searchTerm+'&limit='+numResults+"&rating=G"
         $.ajax({
             url: queryUrl,
             method: 'GET'
