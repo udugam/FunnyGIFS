@@ -1,7 +1,14 @@
 .image-container {
-    padding-bottom: 10px
+    padding-bottom: 10px;
 }
 
+.gif {
+    border: 1px solid white;
+}
 .row {
     padding-top:10px;
+}
+
+.container-fluid {
+    background-color: #D1D3CD;
 }
