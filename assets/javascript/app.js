@@ -32,8 +32,9 @@ var utilities = {
             var imageContainer = $("<div>");
             var image = $("<img>");
             var actions = $("<div>");
+            var rating = $("<h5>");
             var favButton = $("<button>");
-            imageContainer.append(image,actions);
+            imageContainer.append(image,actions,rating);
             
             //Adding styling classes to imageContainer
             imageContainer.addClass("col-md-4"); //Adding bootstrap responsive classes
@@ -47,6 +48,9 @@ var utilities = {
             //Adding the favourite button to the actions div 
             actions.append(favButton);
 
+            //Adding the rating to the Gif
+            rating.text("Rating: "+ element.rating.toUpperCase())
+
             //Adding atrributes and styling classes to image
             image.addClass("img-fluid"); //Adds Bootstrap specific class for styling
             image.addClass("gif");
@@ -54,6 +58,7 @@ var utilities = {
             image.attr("src", element.images.fixed_height_still.url);
             image.attr("data-animate", element.images.fixed_height.url);
             image.attr("data-state", "still");
+            
             $(divName).append(imageContainer);
         })
     },
@@ -73,7 +78,8 @@ var utilities = {
             var image = $("<img>");
             var actions = $("<div>");
             var delButton = $("<button>");
-            imageContainer.append(image,actions);
+            var rating = $("<h5>");
+            imageContainer.append(image,actions,rating);
             
             //Adding styling classes to imageContainer
             imageContainer.addClass("col-md-4"); //Adding bootstrap responsive classes
@@ -83,6 +89,9 @@ var utilities = {
             delButton.text("Delete From Favourites");
             delButton.addClass("delFavourite");
             delButton.attr("data-index", index);
+
+            //Adding the rating to the Gif
+            rating.text("Rating: "+ element.rating.toUpperCase())
 
             //Adding the favourite button to the actions div 
             actions.append(delButton);
